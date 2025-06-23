@@ -1,0 +1,36 @@
+{
+  "name": "cafe-os",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "scripts": {
+    "db:migrate": "drizzle-kit migrate",
+    "db:generate:migration": "drizzle-kit generate",
+    "start": "tsx --no-warnings --env-file=.env ./src/main.ts",
+    "data-migrate": "tsx --no-warnings --env-file=.env ./src/db/migrations/data/0000_seed_data.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": "24.* || >= 22"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.5.3",
+    "@libsql/client": "^0.15.9",
+    "drizzle-orm": "^0.44.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@types/node": "^24.0.3",
+    "drizzle-kit": "^0.31.1",
+    "drizzle-seed": "^0.3.1",
+    "eslint": "^9.29.0",
+    "eslint-plugin-n": "^17.20.0",
+    "globals": "^16.2.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.1"
+  }
+}

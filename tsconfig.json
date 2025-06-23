@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    // This must be set for "paths" to work
+    "baseUrl": ".",
+
+    // Treat files as modules even if it doesn't use import/export
+		"moduleDetection": "force",
+
+    // allow the importing of ts files
+    "allowImportingTsExtensions": true,
+
+		// Ignore module structure
+		"module": "Preserve",
+
+		// Allow JSON modules to be imported
+		"resolveJsonModule": true,
+
+		// Allow JS files to be imported from TS and vice versa
+		"allowJs": true,
+
+		// Use correct ESM import behavior
+		"esModuleInterop": true,
+
+		// Disallow features that require cross-file awareness
+		"isolatedModules": true,
+
+    // Only use tsc for typechecking
+    "noEmit": true,
+
+    // Path aliases
+    "paths": {
+      "@/*": ["./src/*"]       // Adjust "./src/*" to your actual root folder
+    }
+  }
+}
