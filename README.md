@@ -16,6 +16,8 @@ In order to start the application, you will need to make sure to have sqlite and
 appropriate migrations. Use `pnpm db:migrate` to migrate the database, then use `pnpm data-migrate` 
 to seed the initial database with data.
 
+For context, the database library we make use of here is called drizzle. See more information at https://orm.drizzle.team/
+
 ### Starting the Application
 
 use `pnpm start` to start the application once the database is situated.
@@ -24,18 +26,23 @@ use `pnpm start` to start the application once the database is situated.
 Below we layout a few guidelines for the project. Please make sure to read through them completely before starting your project.
 
 __Framework__
+
 The Command Line Interface used is `inquirer`, but feel free to bring in any other CLI frameworks you'd like.
 
 __Language__
+
 Please use Typescript and TSX is used to run the project.
 
 __Backend__
+
 The Application uses SQLite and you will be expected to develop with that.
 
 __Timeboxing__
+
 We know that a product, even as small as this one, can balloon as we think of new ideas and better ways to create the app. We ask that you limit this to no more than 4 hours of total work so that it doesn’t eat into your free time too much and that we have an appropriate baseline to judge it from.
 
 __Testing__
+
 Any kind of automated testing is appreciated, though not required given the time limit provided. However, there should be a way we can test the application’s functionality manually at the bare minimum, ideally by running 1 to 3 commands via CLI.
 
 
