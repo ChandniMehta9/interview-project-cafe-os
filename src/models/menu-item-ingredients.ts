@@ -2,7 +2,7 @@ import db from "@/db/database";
 import { menuItemIngredients, inventoryItem } from "@/db/schema"
 import { eq } from 'drizzle-orm';
 
-type MeasurementUnit = 'mg' | 'ml'
+type MeasurementUnit = 'mg' | 'ml' | 'tsp'
 
 interface MenuItemIngredientData {
   id: number;

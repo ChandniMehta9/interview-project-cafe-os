@@ -2,7 +2,7 @@ import { sqliteTable as table } from "drizzle-orm/sqlite-core"
 import * as t from "drizzle-orm/sqlite-core";
 import { sql } from 'drizzle-orm';
 
-export type MeasurementUnits = 'mg' | 'ml'
+export type MeasurementUnits = 'mg' | 'ml' | 'tsp'
 const useQuantityUnit = () => t.text().notNull().$type<MeasurementUnits>()
 
 //represents ingeredients (milk,coffee beans, etc.) that can be used in menu items

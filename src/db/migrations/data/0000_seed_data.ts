@@ -6,10 +6,8 @@ import { reset } from 'drizzle-seed';
 const gram = 1000
 const kilogram = 1000000
 const liter = 1000
+const tsp = 5
 
-
-// TODO: add a flat white
-// TODO: add a mocha
 
 async function up() {
 
@@ -20,12 +18,15 @@ async function up() {
     { id: 4, name: 'Cappuccino' },
     { id: 5, name: 'Cortado' },
     { id: 6, name: 'Macchiato' },
+    { id: 7, name: 'Flat White' },
+    { id: 8, name: 'Mocha' }
   ];
 
   const inventoryItems = [
     { id: 1, name: 'Coffee Beans: Espresso Roast', quantity: kilogram, quantityUnit: 'mg' as MeasurementUnits },
     { id: 2, name: 'Coffee Beans: Blonde Roast', quantity: kilogram, quantityUnit: 'mg' as MeasurementUnits },
     { id: 3, name: 'Milk', quantity: 10 * liter, quantityUnit: 'ml' as MeasurementUnits },
+    { id: 4, name: 'Cocoa Powder', quantity: 1000 * tsp, quantityUnit: 'tsp' as MeasurementUnits }
   ]
 
   const filterCoffeeIngredients = [
@@ -56,6 +57,16 @@ async function up() {
     { id: 10, menuItemId: 6, inventoryItemId: 3, quantity: 15, quantityUnit: 'ml' as MeasurementUnits },
   ]
 
+  const flatWhiteIngredients = [
+    { id: 11, menuItemId: 7, inventoryItemId: 1, quantity: 18 * gram, quantityUnit: 'mg' as MeasurementUnits },
+    { id: 12, menuItemId: 7, inventoryItemId: 3, quantity: 100, quantityUnit: 'ml' as MeasurementUnits },
+  ]
+  const mochaIngredients = [
+    { id: 13, menuItemId: 8, inventoryItemId: 1, quantity: 18 * gram, quantityUnit: 'mg' as MeasurementUnits },
+    { id: 14, menuItemId: 8, inventoryItemId: 3, quantity: 250, quantityUnit: 'ml' as MeasurementUnits },
+    { id: 15, menuItemId: 8, inventoryItemId: 4, quantity: 2 * tsp, quantityUnit: 'tsp' as MeasurementUnits }
+  ]
+
   await db.transaction(async (tx) => {
     // insert menu items
     await tx
@@ -78,7 +89,9 @@ async function up() {
         ...latteIngredients,
         ...cappuccinoIngredients,
         ...cortadoIngredients,
-        ...macchiatoIngredients
+        ...macchiatoIngredients,
+        ...flatWhiteIngredients,
+        ...mochaIngredients
       ])
       .onConflictDoNothing()
   });

@@ -1,4 +1,3 @@
-import { menuItem } from './db/schema';
 import MenuItem from './models/menu-item';
 import { number, select } from '@inquirer/prompts';
 
