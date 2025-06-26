@@ -1,6 +1,6 @@
 import { menuItem } from './db/schema';
 import MenuItem from './models/menu-item';
-import { select } from '@inquirer/prompts';
+import { number, select } from '@inquirer/prompts';
 
 async function askOrder() {
   const menuItems = await MenuItem.findAll(); 
@@ -18,7 +18,7 @@ async function askOrder() {
       console.log('Thank you for your order!');
       return null;
     };
-    const quantity = await select({ message: `How many ${menuItems.find(m => m.id === drink)!.name}s? would you like?`, choices: [1, 2, 3, 4, 5].map(q => ({ name: `${q}`, value: q })) });
+    const quantity = await number({ message: `How many ${menuItems.find(m => m.id === drink)!.name}s would you like?`, default: 1, min: 1 });  
     return {
       id: drink,
       quantity: quantity
@@ -36,7 +36,7 @@ async function main() {
     if (orderedItem.isAvailable(item.quantity)) {
       await orderedItem.updateQuantity(item.quantity);
       console.log(`You ordered ${item.quantity} ${orderedItem.name}:`)
-      orderedItem.ingredients.forEach(i => console.log(`- ${i.quantity}${i.quantityUnit} ${i.ingredientName}`))
+      orderedItem.ingredients.forEach(i => console.log(`- ${item.quantity * i.quantity}${i.quantityUnit} ${i.ingredientName}`))
     }
     else {
       console.error(`Sorry, ${orderedItem.name} is unvaiable at the moment.`);
