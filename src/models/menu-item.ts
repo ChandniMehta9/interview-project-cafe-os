@@ -10,7 +10,9 @@ export const MENU_ITEM_IDS = {
   latte: 3,
   cappuccino: 4,
   cortado: 5,
-  macchiato: 6
+  macchiato: 6,
+  flatWhite: 7,
+  mocha: 8
 }
 
 
@@ -30,26 +32,28 @@ export default class MenuItem {
    * Finds all menu items in the database.
    * @returns An array of MenuItem objects.
    */
-  static async findAll() {
+  static async findAll(): Promise<MenuItem[]> {
     const menuItemRecords = await db
       .select()
       .from(menuItem)
       .all();
-    return menuItemRecords.map(mi => {
-      return new MenuItem({
-        id: mi.id,
-        name: mi.name,
-        ingredients: [] // TODO
-      })
+    return await Promise.all(
+      menuItemRecords.map(async (mi) => {
+        const ingredients = await MenuItemIngredient.findForMenuItemId(mi.id);
+        return new MenuItem({
+          id: mi.id,
+          name: mi.name,
+          ingredients: ingredients
+        });
     })
-  }
+  )};
 
   /**
    * Finds a menu item by its ID.
    * @param id - The ID of the menu item to find.
    * @returns A MenuItem object or undefined if not found.
    */
-  static async findById(id: number) {
+  static async findById(id: number): Promise<MenuItem | undefined> {
     try {
       const [menuItemRecord] = await db.select().from(menuItem).where(eq(menuItem.id, id)).limit(1);
       const ingredients = await MenuItemIngredient.findForMenuItemId(id);
