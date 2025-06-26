@@ -10,19 +10,17 @@ async function askOrder() {
     })),
     { name: 'Done', value: -1 }
   ];
-  
-  while (true) {
-    const drink = await select({ message: 'Please select what you would like to order', choices });
-    if (drink == -1) {
-      console.log('Thank you for your order!');
-      return null;
-    };
-    const quantity = await number({ message: `How many ${menuItems.find(m => m.id === drink)!.name}s would you like?`, default: 1, min: 1 });  
-    return {
-      id: drink,
-      quantity: quantity
-    };
-  }
+  const drink = await select({ message: 'Please select what you would like to order', choices });
+  if (drink == -1) {
+    console.log('Thank you for your order!');
+    return null;
+  };
+  const quantity = await number({ message: `How many ${menuItems.find(m => m.id === drink)!.name}s would you like?`, default: 1, min: 1 });  
+  return {
+    id: drink,
+    quantity: quantity
+  };
+
 }
 
 async function main() {
@@ -39,7 +37,6 @@ async function main() {
     }
     else {
       console.error(`Sorry, ${orderedItem.name} is unvaiable at the moment.`);
-      return;
     }
    
   }
