@@ -1,5 +1,5 @@
 import db from "@/db/database";
-import { menuItem } from "@/db/schema"
+import { inventoryItem, menuItem } from "@/db/schema"
 import { eq } from 'drizzle-orm';
 import MenuItemIngredient from "./menu-item-ingredients";
 
@@ -26,6 +26,10 @@ export default class MenuItem {
   name: string;
   ingredients: MenuItemIngredient[]
 
+  /**
+   * Finds all menu items in the database.
+   * @returns An array of MenuItem objects.
+   */
   static async findAll() {
     const menuItemRecords = await db
       .select()
@@ -40,6 +44,11 @@ export default class MenuItem {
     })
   }
 
+  /**
+   * Finds a menu item by its ID.
+   * @param id - The ID of the menu item to find.
+   * @returns A MenuItem object or undefined if not found.
+   */
   static async findById(id: number) {
     try {
       const [menuItemRecord] = await db.select().from(menuItem).where(eq(menuItem.id, id)).limit(1);
@@ -54,6 +63,34 @@ export default class MenuItem {
     }
   }
 
+  /**
+   * Checks if the menu item is available based on its ingredients.
+   * @param quantity - The quantity of the menu item being ordered.
+   * @returns True if all ingredients are available, false otherwise.
+   */
+  isAvailable(quantity: number): boolean {
+    return this.ingredients.every(ingredient => ingredient.totalQuantity >= ingredient.quantity * quantity);
+  }
+
+  /**
+   * Gets the missing ingredients for the menu item.
+   * @param quantity - The quantity of the menu item being ordered.
+   * @returns An array of MenuItemIngredient objects that are missing.
+   */
+  getMissingIngredients(quantity: number): MenuItemIngredient[] {
+    return this.ingredients.filter(ingredient => ingredient.totalQuantity < ingredient.quantity * quantity);
+  }
+
+
+  //  Deducts ingredient quantities from the inventory based on the menu item.
+  async updateQuantity(quantity: number) {
+    for (const ingredient of this.ingredients) {
+      const updatedQty = ingredient.totalQuantity - (ingredient.quantity * quantity);
+      if (updatedQty >= 0) {
+        await db.update(inventoryItem).set({quantity: updatedQty}).where(eq(inventoryItem.id, ingredient.inventoryItemId));
+      }
+    }
+  }
   constructor(data: MenuItemData) {
     this.id = data.id;
     this.name = data.name;

@@ -5,16 +5,17 @@ import { sql } from 'drizzle-orm';
 export type MeasurementUnits = 'mg' | 'ml'
 const useQuantityUnit = () => t.text().notNull().$type<MeasurementUnits>()
 
-
+//represents ingeredients (milk,coffee beans, etc.) that can be used in menu items
 export const inventoryItem = table('inventory_items', {
   id: t.integer().primaryKey({ autoIncrement: true }),
   name: t.text().notNull(),
-  quantity: t.integer().notNull(),
-  quantityUnit: useQuantityUnit(),
+  quantity: t.integer().notNull(),  //amount available
+  quantityUnit: useQuantityUnit(),  //unit of measurement (mg / ml)
   createdAt: t.text().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: t.text().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: t.text().default(sql`CURRENT_TIMESTAMP`), 
 });
 
+//represent coffee drinks
 export const menuItem = table('menu_items', {
   id: t.integer().primaryKey({ autoIncrement: true }),
   name: t.text().notNull(),
@@ -23,10 +24,11 @@ export const menuItem = table('menu_items', {
   deletedAt: t.text(),
 });
 
+//maps menu items to their ingredients
 export const menuItemIngredients = table('menu_item_ingredients', {
   id: t.integer().primaryKey({ autoIncrement: true }),
-  quantity: t.integer().notNull(),
+  quantity: t.integer().notNull(),                                          //how much of the ingredient is used in the menu item
   quantityUnit: useQuantityUnit(),
-  menuItemId: t.integer().notNull().references(() => menuItem.id),
-  inventoryItemId: t.integer().notNull().references(() => inventoryItem.id),
+  menuItemId: t.integer().notNull().references(() => menuItem.id),            //fk to menuItem
+  inventoryItemId: t.integer().notNull().references(() => inventoryItem.id),   //fk to inventoryItem
 });

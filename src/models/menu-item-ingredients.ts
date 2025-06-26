@@ -11,6 +11,7 @@ interface MenuItemIngredientData {
   quantityUnit: MeasurementUnit;
   menuItemId: number;
   inventoryItemId: number;
+  totalQuantity: number; // total quantity of the ingredient in the inventory
 }
 
 // merge with inventory item
@@ -21,7 +22,13 @@ export default class MenuItemIngredient {
   quantityUnit: MeasurementUnit;
   menuItemId: number;
   inventoryItemId: number;
+  totalQuantity: number;
 
+  /**
+   * Finds all menu item ingredients for a given menu item ID.
+   * @param menuItemId - The ID of the menu item to find ingredients for.
+   * @returns An array of MenuItemIngredient objects.
+   */
   static async findForMenuItemId(menuItemId: number): Promise<MenuItemIngredient[]> {
     try {
       const menuItemIngredientRecords = await db
@@ -37,6 +44,7 @@ export default class MenuItemIngredient {
           quantityUnit: mi.menu_item_ingredients.quantityUnit,
           menuItemId: mi.menu_item_ingredients.menuItemId,
           inventoryItemId: mi.inventory_items.id,
+          totalQuantity: mi.inventory_items.quantity // total quantity of the ingredient in the inventory
         });
       })
       return menuItemIngredientObjects;
@@ -44,7 +52,7 @@ export default class MenuItemIngredient {
       console.error(err);
     }
   }
-
+  
   constructor(data: MenuItemIngredientData) {
     this.id = data.id;
     this.ingredientName = data.ingredientName;
@@ -52,5 +60,6 @@ export default class MenuItemIngredient {
     this.quantityUnit = data.quantityUnit;
     this.menuItemId = data.menuItemId;
     this.inventoryItemId = data.inventoryItemId;
+    this.totalQuantity = data.totalQuantity;
   }
 }
